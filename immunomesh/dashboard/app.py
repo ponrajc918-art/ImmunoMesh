@@ -1,7 +1,15 @@
 """ImmunoMesh research dashboard (Streamlit).  Launch:  python -m immunomesh.cli dashboard
 Displays ONLY data produced by the implemented pipeline (results/final/demo + results/final/tables)."""
 import os
+import sys
 from pathlib import Path
+
+# Streamlit Cloud may put this nested app directory, rather than the repository root,
+# on sys.path. Add the repository root before importing the local ImmunoMesh package.
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -10,7 +18,10 @@ import pandas as pd
 import streamlit as st
 from immunomesh.dashboard.data import RunData
 
-RUN_DIR = Path(os.environ.get("IMMUNOMESH_RUN_DIR", "results/final/demo"))
+RUN_DIR = Path(os.environ.get("IMMUNOMESH_RUN_DIR", str(PROJECT_ROOT / "results/final/demo"))).expanduser()
+if not RUN_DIR.is_absolute():
+    RUN_DIR = PROJECT_ROOT / RUN_DIR
+RUN_DIR = RUN_DIR.resolve()
 FINAL_DIR = RUN_DIR.parent
 STATE_COLORS = {"NORMAL": "#dfe6e9", "SUSPICIOUS": "#ffeaa7", "HIGH_RISK": "#fab1a0", "QUARANTINED": "#d63031",
                 "RECOVERING": "#74b9ff", "RESTORED": "#55efc4"}
@@ -147,9 +158,14 @@ with tabs[7]:
               "separate directories and are never mixed in one chart.")
     from immunomesh.integration.dashboard_live import LiveRunData
     import os
-    live_dir = st.selectbox("Run directory", ["results/hil", "results/live"], index=0)
-    if not os.path.isdir(live_dir):
-        st.info(f"No run found at {live_dir}. Run `python -m immunomesh.cli edge` or "
+    live_dirs = {
+        "results/hil": PROJECT_ROOT / "results/hil",
+        "results/live": PROJECT_ROOT / "results/live",
+    }
+    live_choice = st.selectbox("Run directory", list(live_dirs), index=0)
+    live_dir = live_dirs[live_choice]
+    if not live_dir.is_dir():
+        st.info(f"No run found at {live_choice}. Run `python -m immunomesh.cli edge` or "
                 "`python -m immunomesh.integration.hil_selftest` first.")
     else:
         ld = LiveRunData(live_dir)
