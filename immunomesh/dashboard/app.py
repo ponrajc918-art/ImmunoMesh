@@ -101,17 +101,44 @@ with tabs[5]:
     st.download_button("Download audit CSV", a.to_csv(index=False), "audit_events.csv")
 
 with tabs[6]:
-    tdir = FINAL_DIR / "tables"
-    if tdir.exists():
-        for name in ["ablation_E3_high_intensity", "model_comparison_E3", "threshold_analysis", "flow_detection_by_scenario"]:
-            p = tdir / f"{name}.csv"
-            if p.exists():
-                st.subheader(name.replace("_", " ")); st.dataframe(pd.read_csv(p), use_container_width=True)
-        for img in sorted((FINAL_DIR / "figures").glob("*.png"))[:12]:
-            st.image(str(img), caption=img.stem)
-    else:
-        st.info("Run `python -m immunomesh.cli report` to generate multi-seed tables and figures.")
+    st.subheader("Research Experiments")
 
+    tdir = FINAL_DIR / "tables"
+
+    if tdir.exists():
+        table_names = [
+            "ablation_E2_low_intensity",
+            "ablation_E3_high_intensity",
+            "ablation_E4_multi_device_5",
+            "ablation_E10_recovery_quarantine",
+            "model_comparison",
+            "per_attack_recall_E3",
+            "threshold_analysis_flow",
+            "threshold_analysis_mesh",
+            "window_length_sweep",
+            "flow_detection_by_scenario",
+        ]
+
+        for name in table_names:
+            table_path = tdir / f"{name}.csv"
+
+            if table_path.is_file():
+                st.subheader(name.replace("_", " "))
+                st.dataframe(
+                    pd.read_csv(table_path),
+                    use_container_width=True,
+                )
+
+        figures_dir = FINAL_DIR / "figures"
+
+        if figures_dir.exists():
+            for img in sorted(figures_dir.glob("*.png"))[:12]:
+                st.image(str(img), caption=img.stem)
+    else:
+        st.info(
+            "Research tables are unavailable. "
+            "Check the committed results/final directory."
+        )
 
 with tabs[7]:
     st.subheader("LIVE NETWORK")
