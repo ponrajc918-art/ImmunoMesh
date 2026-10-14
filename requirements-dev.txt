@@ -1,0 +1,11 @@
+-r requirements-runtime.txt
+# Everything needed for the simulation suite, dashboard, and the optional adapters below.
+matplotlib
+pytest
+shap
+streamlit
+tabulate
+# Optional, lazy-imported — absence degrades the relevant adapter to UNSUPPORTED, never a crash:
+# zeroconf       # mDNS discovery (discovery/mdns.py)
+# paramiko       # SSH switch adapter (switch/ssh.py)
+# pysnmp         # SNMP switch adapter (switch/snmp.py)

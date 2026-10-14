@@ -1,0 +1,24 @@
+# Copy to /etc/systemd/system/immunomesh.service, edit WorkingDirectory/User, then:
+#   sudo systemctl daemon-reload && sudo systemctl enable --now immunomesh
+# Starts in OBSERVE_ONLY mode (config/live.yaml default) — review that file's runtime.mode
+# before changing anything here. Raw-socket capture needs CAP_NET_RAW at minimum; running as
+# root (as below) is the simplest option on a dedicated Raspberry Pi edge node.
+[Unit]
+Description=ImmunoMesh edge runtime (observe-only by default)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/immunomesh
+ExecStart=/usr/bin/python3 -m immunomesh.cli edge --headless
+Restart=on-failure
+RestartSec=5
+# Credentials (if a switch adapter is configured) belong in an EnvironmentFile, never here:
+# EnvironmentFile=/etc/immunomesh/credentials.env
+NoNewPrivileges=false
+AmbientCapabilities=CAP_NET_RAW CAP_NET_ADMIN
+
+[Install]
+WantedBy=multi-user.target

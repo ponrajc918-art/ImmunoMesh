@@ -1,0 +1,72 @@
+{
+  "high": {
+    "detection": {
+      "n_flows": 11912,
+      "n_anomalous_flows": 1317,
+      "tp": 874,
+      "fp": 118,
+      "tn": 10477,
+      "fn": 443,
+      "precision": 0.8810483870967742,
+      "recall": 0.6636294608959757,
+      "f1": 0.7570376786487657,
+      "false_positive_rate": 0.011137328928739972,
+      "false_negative_rate": 0.3363705391040243,
+      "roc_auc": 0.9816997960743505,
+      "average_precision": 0.8659306688757982
+    },
+    "per_attack_recall": {
+      "brute_force": {
+        "flows": 598,
+        "recall": 0.2625418060200669
+      },
+      "port_scan": {
+        "flows": 600,
+        "recall": 0.9983333333333333
+      },
+      "traffic_spike": {
+        "flows": 119,
+        "recall": 0.9915966386554622
+      }
+    },
+    "threshold": 0.6545407991810783,
+    "train_flows": 10659,
+    "eval_flows": 11912,
+    "seed": 42
+  },
+  "low": {
+    "detection": {
+      "n_flows": 10986,
+      "n_anomalous_flows": 394,
+      "tp": 224,
+      "fp": 128,
+      "tn": 10464,
+      "fn": 170,
+      "precision": 0.6363636363636364,
+      "recall": 0.5685279187817259,
+      "f1": 0.6005361930294906,
+      "false_positive_rate": 0.012084592145015106,
+      "false_negative_rate": 0.43147208121827413,
+      "roc_auc": 0.9731046417562531,
+      "average_precision": 0.6437797012674744
+    },
+    "per_attack_recall": {
+      "brute_force": {
+        "flows": 179,
+        "recall": 0.24581005586592178
+      },
+      "port_scan": {
+        "flows": 180,
+        "recall": 1.0
+      },
+      "traffic_spike": {
+        "flows": 35,
+        "recall": 0.0
+      }
+    },
+    "threshold": 0.6545407991810783,
+    "train_flows": 10659,
+    "eval_flows": 10986,
+    "seed": 42
+  }
+}

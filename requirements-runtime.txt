@@ -1,0 +1,8 @@
+# Minimal set for the real-network edge runtime on a Raspberry Pi/Linux host.
+# Packet capture, flow aggregation, discovery (ARP), classification, trust/response, and audit
+# all use only the stdlib + this list — no scapy, no heavy ML extras beyond what detection needs.
+numpy
+pandas
+scikit-learn
+pyyaml
+joblib

@@ -1,0 +1,138 @@
+{
+  "generated_at": "2026-10-06T18:17:25.145966+00:00",
+  "seeds": [
+    200,
+    201,
+    202,
+    203,
+    204,
+    205,
+    206,
+    207
+  ],
+  "base_config": {
+    "seed": 42,
+    "simulation": {
+      "n_cameras": 4,
+      "n_sensors": 3,
+      "n_plcs": 2,
+      "train_duration_s": 900.0,
+      "eval_duration_s": 900.0,
+      "anomalous_device_count": 2,
+      "windows_per_device": 2,
+      "window_length_s": 60,
+      "intensity": "high",
+      "attack_types": [
+        "traffic_spike",
+        "port_scan",
+        "brute_force",
+        "exfiltration",
+        "protocol_irregularity"
+      ],
+      "missing_rate": 0.005,
+      "duplicate_rate": 0.003,
+      "invalid_rate": 0.002
+    },
+    "features": {
+      "window_s": 10.0
+    },
+    "detector": {
+      "n_estimators": 200,
+      "max_samples": 256,
+      "threshold_quantile": 0.99
+    },
+    "evidence": {
+      "top_k": 5,
+      "z_threshold": 3.0,
+      "min_strength": 0.3,
+      "baseline_by_service": false,
+      "min_service_n": 30
+    },
+    "mesh": {
+      "epoch_s": 10.0,
+      "k_min": 2,
+      "a_min": 0.3,
+      "trust_init": 1.0,
+      "lambda_pen": 0.35,
+      "lambda_rec": 0.1,
+      "history_window": 6,
+      "gamma": 0.5,
+      "alert_trust": 0.7,
+      "t_high": 0.5,
+      "t_quar": 0.3,
+      "omega": 0.3,
+      "visibility": 0.5,
+      "consensus_min": 0.3,
+      "cooldown_epochs": 6,
+      "clear_epochs": 3,
+      "recover_clean_epochs": 3,
+      "probation_epochs": 3,
+      "recover_trust": 0.5,
+      "escalation_factor": 2,
+      "max_cooldown_epochs": 24,
+      "use_evidence": true,
+      "use_trust": true,
+      "use_consensus": true,
+      "use_response": true
+    }
+  },
+  "quantiles": [
+    0.95,
+    0.98,
+    0.99,
+    0.995,
+    0.999
+  ],
+  "proportion_windows": [
+    30,
+    60,
+    120,
+    240
+  ],
+  "scenario_ids": [
+    "E1:normal_only",
+    "E10:recovery_quarantine",
+    "E2:low_intensity",
+    "E3:high_intensity",
+    "E4:multi_device_5",
+    "E8:q0.95",
+    "E8:q0.98",
+    "E8:q0.99",
+    "E8:q0.995",
+    "E8:q0.999",
+    "E9:window_120s",
+    "E9:window_240s",
+    "E9:window_30s",
+    "E9:window_60s"
+  ],
+  "ablation_variants": [
+    "A0_anomaly_only",
+    "A1_plus_evidence",
+    "A2_plus_trust",
+    "A3_plus_consensus",
+    "A4_full_system"
+  ],
+  "python": "3.12.3",
+  "sklearn": "1.8.0",
+  "numpy": "2.4.4",
+  "pandas": "3.0.2",
+  "platform": "Linux-6.18.44-fc-v70-x86_64-with-glibc2.39",
+  "per_seed_result_files": [
+    "results/final/_seeds/seed_200.json",
+    "results/final/_seeds/seed_201.json",
+    "results/final/_seeds/seed_202.json",
+    "results/final/_seeds/seed_203.json",
+    "results/final/_seeds/seed_204.json",
+    "results/final/_seeds/seed_205.json",
+    "results/final/_seeds/seed_206.json",
+    "results/final/_seeds/seed_207.json"
+  ],
+  "output_locations": {
+    "per_seed_raw_results": "results/final/_seeds",
+    "aggregated_tables": "results/final/tables",
+    "figures": "results/final/figures",
+    "summary_report": "results/final/RESULTS.md",
+    "dashboard_demo_run": "results/final/demo"
+  },
+  "note": "All data SIMULATED/SYNTHETIC. Software-only results; no hardware or real traffic."
+}

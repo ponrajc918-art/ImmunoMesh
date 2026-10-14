@@ -1,0 +1,79 @@
+{
+  "note": "SIMULATED/SYNTHETIC data; software results only, no hardware or real traffic.",
+  "seed": 42,
+  "train_flows": 10659,
+  "eval_flows": 11912,
+  "threshold": 0.6545407991810783,
+  "cleaning": {
+    "train": {
+      "rows_in": 10716,
+      "duplicates_removed": 39,
+      "invalid_removed": 18,
+      "missing_values_imputed": 163,
+      "rows_out": 10659
+    },
+    "eval": {
+      "rows_in": 11971,
+      "duplicates_removed": 32,
+      "invalid_removed": 27,
+      "missing_values_imputed": 180,
+      "rows_out": 11912
+    }
+  },
+  "detection": {
+    "n_flows": 11912,
+    "n_anomalous_flows": 1317,
+    "tp": 874,
+    "fp": 118,
+    "tn": 10477,
+    "fn": 443,
+    "precision": 0.8810483870967742,
+    "recall": 0.6636294608959757,
+    "f1": 0.7570376786487657,
+    "false_positive_rate": 0.011137328928739972,
+    "false_negative_rate": 0.3363705391040243,
+    "roc_auc": 0.9816997960743505,
+    "average_precision": 0.8659306688757982
+  },
+  "per_attack_recall": {
+    "brute_force": {
+      "flows": 598,
+      "recall": 0.2625418060200669
+    },
+    "port_scan": {
+      "flows": 600,
+      "recall": 0.9983333333333333
+    },
+    "traffic_spike": {
+      "flows": 119,
+      "recall": 0.9915966386554622
+    }
+  },
+  "attack_windows": {
+    "sensor_02": [
+      [
+        "traffic_spike",
+        16.824852974342157,
+        76.82485297434215
+      ],
+      [
+        "brute_force",
+        1604.9385693092652,
+        1664.9385693092652
+      ]
+    ],
+    "sensor_01": [
+      [
+        "brute_force",
+        188.75239337104452,
+        248.75239337104452
+      ],
+      [
+        "port_scan",
+        1531.505508327637,
+        1591.505508327637
+      ]
+    ]
+  },
+  "wall_time_s_this_machine": 0.92
+}

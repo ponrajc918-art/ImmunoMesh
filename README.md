@@ -1,0 +1,81 @@
+# ImmunoMesh — software research prototype (v1.0.0-research)
+
+AI-assisted adaptive intrusion detection for edge/industrial networks. This is a **software
+research prototype**: the primary research evaluation (Phases 1-10, `results/final/`) uses
+controlled synthetic/simulated network traffic, generated and labelled by this repository's own
+simulator. Results should **not** be interpreted as real-world or industrial-network
+performance — see `docs/LIMITATIONS.md`.
+
+The repository also contains a **real-network integration layer** (`immunomesh/integration/`)
+with genuine packet capture, flow aggregation, device discovery, and enforcement adapters. This
+has been exercised by a **loopback HIL (hardware-in-the-loop) self-test** — real packets,
+real capture code, on this development environment's own network stack — documented in
+`results/hil/RESULTS.md`. **No physical Raspberry Pi, managed switch, or IP camera has been
+used**; the loopback test is not a physical deployment and is not used as a detection-performance
+benchmark (it reports operational metrics only — packets captured, flows processed, dropped
+packets, state transitions — never fabricated precision/recall, since no ground-truth labels
+exist for real traffic). Physical hardware deployment is a documented future validation target
+(`docs/REAL_NETWORK_GUIDE.md`, `docs/hardware/`).
+
+| | Scope |
+|---|---|
+| **Simulation** (Phases 1-10) | Primary research evaluation. Synthetic traffic, synthetic attacks, ground-truth labels. `results/final/`, `results/run_seed42_*` |
+| **Loopback HIL** | Real capture code path exercised with real local traffic. No ground truth, no attacks, no ML performance claims. `results/hil/` |
+| **Physical hardware** | Documented, not yet performed. `docs/hardware/`, `docs/REAL_NETWORK_GUIDE.md` |
+
+## Install & quick start
+```
+pip install -r requirements-dev.txt   # or: pip install -r requirements.txt (identical — see below)
+pytest -q                             # 75 tests: simulation + real-network layer (mocks/fakes; no hardware or root needed)
+
+python -m immunomesh.cli run          # Phases 2-5 only: one seed, prints detection metrics
+python -m immunomesh.cli demo         # full system (Phases 2-9), writes results/final/demo/
+python -m immunomesh.cli dashboard    # Streamlit dashboard over the demo run
+python -m immunomesh.cli investigate  # Phase 6: multi-seed brute-force investigation
+python -m immunomesh.cli final        # Phase 10: multi-seed experiments 1-10 (checkpointed, resumable)
+python -m immunomesh.cli report       # aggregate results/final/_seeds/*.json -> tables, figures, RESULTS.md
+
+python -m immunomesh.cli doctor       # real-network readiness check (see docs/REAL_NETWORK_GUIDE.md)
+```
+`requirements.txt` is an alias of `requirements-dev.txt` (the complete set CI installs);
+`requirements-runtime.txt` is the smaller set needed only for edge/`cli edge` deployment. See
+`docs/REPRODUCIBILITY.md` for the exact pinned versions used to generate `results/final/`.
+
+## What's implemented (see docs/PHASE_STATUS.md for detail)
+1. Config/logging/CLI architecture · 2. Synthetic labelled traffic simulator (3 device types, 5
+attacks) · 3. Cleaning + feature scaling · 4. 15 causal cybersecurity features · 5. Isolation
+Forest detector (frozen baseline, regression-tested) · 6. SHAP + baseline-deviation
+evidence/explainability · 7. Per-device trust engine · 8. Simulated peer consensus · 9. Adaptive
+response/quarantine/recovery state machine + SQLite audit log · 10. Streamlit dashboard,
+multi-seed experiment suite (E1-E10), ablation study (A0-A4), Isolation Forest vs One-Class SVM
+vs LOF comparison, auto-generated report · **Real-network layer**: packet capture, flow
+aggregation, device discovery/classification, switch/camera/AP adapters (dry-run always
+available; SNMP/SSH/AP honestly report UNSUPPORTED — no physical hardware was available to
+verify them), an OBSERVE_ONLY/DRY_RUN/ENFORCE-gated enforcement executor with verification and
+rollback (implemented and unit-tested against fake adapters only), a live runtime that reuses the
+frozen Phase 2-7 code (feature pipeline, Isolation Forest, evidence, trust) on captured flows, and
+a Live Network dashboard tab. **Not wired into the live runtime:** peer consensus, the response
+state machine, and the enforcement executor — these run only in the simulation and in unit tests.
+
+## Key documents
+- `docs/ARCHITECTURE.md`, `docs/METHODOLOGY.md`, `docs/EXPERIMENTS.md`
+- `docs/LIMITATIONS.md`, `docs/THREAT_MODEL.md`, `docs/PHASE_STATUS.md`
+- `docs/REPRODUCIBILITY.md` — exact commands and pinned versions to regenerate every result
+- `docs/REAL_NETWORK_GUIDE.md`, `docs/hardware/` — real-network layer, honestly scoped
+- `docs/RESULTS_PRELIMINARY_SEED42.md` — frozen Phase 1-5 single-seed baseline (preliminary)
+- `docs/BRUTE_FORCE_INVESTIGATION.md` — Phase 6 multi-seed investigation of weak brute-force recall
+- `results/final/RESULTS.md` — Phase 10 multi-seed simulation results (generated by `cli report`)
+- `results/hil/RESULTS.md` — loopback HIL self-test (operational metrics only, no ground truth)
+- `docs/RELEASE_CHECKLIST.md` — release-readiness checklist for this version
+
+## Research integrity notes
+- Phases 1-5 (simulator, cleaner, features, detector) are **frozen**: `tests/test_baseline_regression.py`
+  fails if their output for seed 42 changes. They were not retuned to chase better metrics.
+- Every number in every `docs/*RESULTS*.md` / `results/final/RESULTS.md` is computed by the
+  code in this repository from simulated data — none are invented or hand-estimated.
+- The weakest finding in the current multi-seed results — **exfiltration recall ≈0.29** at high
+  intensity (E3; see `results/final/tables/per_attack_recall_E3.csv`) — is reported as-is. It was
+  not tuned away, hidden, or relabelled. Note that it rests on only the 4 of 8 seeds in which an
+  exfiltration window occurred (per-seed range 0.10–0.49). See `docs/LIMITATIONS.md`.
+- In the model comparison, Isolation Forest is **not** the best-scoring detector: One-Class SVM and
+  Local Outlier Factor have higher recall, F1 and ROC-AUC in both scenarios (`docs/LIMITATIONS.md`).

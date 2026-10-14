@@ -1,0 +1,5 @@
+# Kept for anyone who instinctively runs `pip install -r requirements.txt`. This repo's real
+# source of truth is requirements-runtime.txt (edge deployment) and requirements-dev.txt
+# (everything needed to run the test suite, dashboard, and experiment suite — what CI uses).
+# This file is simply an alias so the obvious filename always gets the complete set.
+-r requirements-dev.txt

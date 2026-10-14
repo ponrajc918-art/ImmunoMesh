@@ -1,0 +1,58 @@
+detector:
+  max_samples: 256
+  n_estimators: 200
+  threshold_quantile: 0.99
+evidence:
+  baseline_by_service: false
+  min_service_n: 30
+  min_strength: 0.3
+  top_k: 5
+  z_threshold: 3.0
+features:
+  window_s: 10.0
+mesh:
+  a_min: 0.3
+  alert_trust: 0.7
+  clear_epochs: 3
+  consensus_min: 0.3
+  cooldown_epochs: 6
+  epoch_s: 10.0
+  escalation_factor: 2
+  gamma: 0.5
+  history_window: 6
+  k_min: 2
+  lambda_pen: 0.35
+  lambda_rec: 0.1
+  max_cooldown_epochs: 24
+  omega: 0.3
+  probation_epochs: 3
+  recover_clean_epochs: 3
+  recover_trust: 0.5
+  t_high: 0.5
+  t_quar: 0.3
+  trust_init: 1.0
+  use_consensus: true
+  use_evidence: true
+  use_response: true
+  use_trust: true
+  visibility: 0.5
+seed: 200
+simulation:
+  anomalous_device_count: 2
+  attack_types:
+  - traffic_spike
+  - port_scan
+  - brute_force
+  - exfiltration
+  - protocol_irregularity
+  duplicate_rate: 0.003
+  eval_duration_s: 1800
+  intensity: high
+  invalid_rate: 0.002
+  missing_rate: 0.005
+  n_cameras: 4
+  n_plcs: 2
+  n_sensors: 3
+  train_duration_s: 1800
+  window_length_s: 60
+  windows_per_device: 2

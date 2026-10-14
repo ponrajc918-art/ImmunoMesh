@@ -1,0 +1,16 @@
+# Section 30: runs the full suite with no physical hardware, no network access, no credentials.
+name: ImmunoMesh CI
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install -r requirements-dev.txt
+      - run: python -m compileall immunomesh
+      - run: pytest -q
+      - run: python -m immunomesh.cli --help
+      - run: python -m immunomesh.cli doctor
+      - run: python -m immunomesh.cli discover

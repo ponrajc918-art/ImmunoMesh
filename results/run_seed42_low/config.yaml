@@ -1,0 +1,26 @@
+detector:
+  max_samples: 256
+  n_estimators: 200
+  threshold_quantile: 0.99
+features:
+  window_s: 10.0
+seed: 42
+simulation:
+  anomalous_device_count: 2
+  attack_types:
+  - traffic_spike
+  - port_scan
+  - brute_force
+  - exfiltration
+  - protocol_irregularity
+  duplicate_rate: 0.003
+  eval_duration_s: 1800
+  intensity: low
+  invalid_rate: 0.002
+  missing_rate: 0.005
+  n_cameras: 4
+  n_plcs: 2
+  n_sensors: 3
+  train_duration_s: 1800
+  window_length_s: 60
+  windows_per_device: 2

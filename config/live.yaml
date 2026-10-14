@@ -1,0 +1,29 @@
+# ImmunoMesh live-runtime configuration (Section 12). Safe defaults: observe-only, no
+# enforcement, no switch adapter. Escalate deliberately: observe_only -> dry_run -> enforce.
+runtime:
+  mode: observe_only
+
+capture:
+  interface: null            # null = auto-detect (first non-loopback interface that is up)
+  enabled: true
+  idle_timeout_s: 15.0
+  epoch_s: 10.0
+
+discovery:
+  arp: true
+  dhcp: true
+  mdns: true
+
+devices:
+  auto_classification: true
+
+switch:
+  enabled: false
+  adapter: none               # none | dry_run | snmp | ssh
+
+enforcement:
+  enabled: false
+  require_confirmation: true
+
+dashboard:
+  enabled: true

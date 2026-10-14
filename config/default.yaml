@@ -1,0 +1,52 @@
+# ImmunoMesh default experiment configuration (Phases 1-5)
+seed: 42
+simulation:
+  n_cameras: 4
+  n_sensors: 3
+  n_plcs: 2
+  train_duration_s: 1800      # anomaly-free baseline period (detector training)
+  eval_duration_s: 1800       # evaluation period (contains injected anomalies)
+  anomalous_device_count: 2
+  windows_per_device: 2
+  window_length_s: 60
+  intensity: high             # low | high
+  attack_types: [traffic_spike, port_scan, brute_force, exfiltration, protocol_irregularity]
+  missing_rate: 0.005         # raw-data corruption to exercise the cleaner
+  duplicate_rate: 0.003
+  invalid_rate: 0.002
+features:
+  window_s: 10.0
+detector:
+  n_estimators: 200
+  max_samples: 256
+  threshold_quantile: 0.99    # quantile of TRAINING scores used as decision threshold
+evidence:
+  top_k: 5
+  z_threshold: 3.0
+  min_strength: 0.3
+mesh:                          # Phases 7-9 (a-priori defaults, NOT tuned on results; see METHODOLOGY.md)
+  epoch_s: 10.0
+  k_min: 2
+  a_min: 0.3
+  trust_init: 1.0
+  lambda_pen: 0.35
+  lambda_rec: 0.10
+  history_window: 6
+  gamma: 0.5
+  alert_trust: 0.7
+  t_high: 0.5
+  t_quar: 0.3
+  omega: 0.3
+  visibility: 0.5
+  consensus_min: 0.3
+  cooldown_epochs: 6
+  clear_epochs: 3
+  recover_clean_epochs: 3
+  probation_epochs: 3
+  recover_trust: 0.5
+  escalation_factor: 2
+  max_cooldown_epochs: 24
+  use_evidence: true
+  use_trust: true
+  use_consensus: true
+  use_response: true

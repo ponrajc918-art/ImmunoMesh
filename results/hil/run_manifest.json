@@ -1,0 +1,22 @@
+{
+  "mode": "HIL_SELFTEST",
+  "honest_scope": "Real packet capture on this container's own loopback interface, with locally generated TCP traffic. NO physical Raspberry Pi, managed switch, or IP camera was used or is claimed. This validates the real-capture code path end-to-end, not a physical deployment.",
+  "interface": "lo",
+  "raspberry_pi_detected": false,
+  "raspberry_pi_detail": "no Raspberry Pi / BCM SoC signature in /proc/cpuinfo (this is generic Linux hardware/container)",
+  "raw_socket_capability": true,
+  "raw_socket_detail": "AF_PACKET SOCK_RAW opened successfully",
+  "started_at": 1790909124.3334644,
+  "requested_duration_s": 20.0,
+  "real_connections_generated": 133,
+  "packets_captured": 2640,
+  "flows_closed": 264,
+  "dropped_packets": 0,
+  "epochs_processed": 35,
+  "cycles_run": 40,
+  "supervisor_failures": 0,
+  "final_health": "healthy",
+  "final_runtime_state": "MONITORING",
+  "mean_cycle_latency_ms": 0.05138300002727192,
+  "completed_at": 1790909146.7312877
+}
