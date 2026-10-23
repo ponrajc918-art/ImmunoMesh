@@ -62,22 +62,29 @@ st.markdown("""
   <div class="im-chips">
     <span class="im-chip">THREAT DETECTION</span>
     <span class="im-chip">DEVICE TRUST</span>
-    <span class="im-chip">ISOLATION &amp; RECOVERY</span>
+    <span class="im-chip">SIMULATED RESPONSE</span>
     <span class="im-chip">SCENARIO EVALUATION</span>
   </div>
 </div>
 """, unsafe_allow_html=True)
 
+st.warning(
+    "Research-scope notice: all detection and response results shown here use "
+    "synthetic/simulated traffic. This dashboard does not inspect camera malware, "
+    "control physical devices, or prove real-network detection performance."
+)
+
 with st.expander("About this dashboard", expanded=False):
     st.caption("Scenario evaluation uses simulated network traffic. Isolation and recovery events represent software-level response states; this hosted dashboard does not control physical devices.")
 
 with st.expander("Run details", expanded=False):
-    run_cols = st.columns(3)
+    run_cols = st.columns(4)
     run_cols[0].metric("Experiment", d.meta["experiment_id"])
     run_cols[1].metric("Seed", d.meta["seed"])
     run_cols[2].metric("Decision threshold", f"{d.meta['threshold']:.4f}")
+    run_cols[3].metric("Data source", "Synthetic / simulated")
 
-tabs = st.tabs(["Overview", "Detection", "Evidence", "Trust & Consensus", "Isolation & Recovery", "Audit Log", "Evaluation", "Capture Test"])
+tabs = st.tabs(["Overview", "Detection", "Evidence", "Trust & Consensus", "Response Simulation", "Audit Log", "Evaluation", "Capture Test"])
 with tabs[0]:
     o = d.overview()
     metric_labels = {
@@ -199,7 +206,7 @@ with tabs[4]:
             "state_to": "New state",
             "response": "Response action",
         })
-        st.subheader("Isolation and recovery history")
+        st.subheader("Simulated response-state history")
         st.dataframe(response_events, use_container_width=True)
 
 with tabs[5]:
@@ -223,14 +230,17 @@ with tabs[5]:
 
 with tabs[6]:
     st.subheader("Evaluation results")
-    st.caption("Scenario benchmarks, detector comparisons and sensitivity analyses.")
+    st.caption(
+        "Synthetic scenario benchmarks, detector comparisons and sensitivity analyses. "
+        "Flow-level metrics and response-state epoch/window metrics are different quantities."
+    )
 
     tdir = FINAL_DIR / "tables"
     table_labels = {
         "ablation_E2_low_intensity": "Low-intensity scenario",
         "ablation_E3_high_intensity": "High-intensity scenario",
         "ablation_E4_multi_device_5": "Multi-device scenario (5 devices)",
-        "ablation_E10_recovery_quarantine": "Isolation and recovery evaluation",
+        "ablation_E10_recovery_quarantine": "Simulated response-state evaluation",
         "model_comparison": "Detector comparison",
         "per_attack_recall_E3": "Detection recall by attack type",
         "threshold_analysis_flow": "Flow-level threshold analysis",
