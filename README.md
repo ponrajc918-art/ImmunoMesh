@@ -3,7 +3,7 @@ ImmunoMesh — Adaptive Intrusion Detection and Response
 A research prototype for edge and industrial network security
 ImmunoMesh is a Python-based research prototype for adaptive intrusion detection and response in edge and industrial networks. It combines synthetic traffic simulation, machine-learning-based anomaly detection, evidence generation, device trust, peer consensus, simulated quarantine and recovery, audit logging, and an interactive Streamlit dashboard.
 
-Live dashboard: Open the Live ImmunoMesh Dashboard
+Live dashboard: https://immunomesh-ponraj.streamlit.app/
 
 The hosted dashboard is a research demonstration using the available project data; opening it does not mean it is monitoring or isolating devices on your network.
 
